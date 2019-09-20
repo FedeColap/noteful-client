@@ -1,4 +1,6 @@
-
+.NoteListNav {
+  background-color: yellowgreen;
+}
 .NoteListNav__list {
   list-style-type: none;
   margin: 130px 0 0;
@@ -19,7 +21,7 @@
 }
 
 .NoteListNav__folder-link {
-  background-color: #030f1f;
+  background-color: pink;
   color: #b5b3b3;
   display: block;
   font-family: var(--custom-font);

@@ -11,15 +11,15 @@
 }
 
 .App__nav {
-  background-color: #0b1b32;
-  color: #fff;
+  background-color: grey;
+  color: purple;
   grid-area: sidebar;
   height: 100vh;
   overflow: auto;
 }
 
 .App__header {
-  background-color: #0b1f3a;
+  background-color: fuchsia;
   color: #bdbdbd;
   font-family: var(--custom-font);
   grid-area: header;

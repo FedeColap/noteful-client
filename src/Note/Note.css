@@ -1,7 +1,7 @@
 
 .Note {
   --note-height: 88px;
-  background-color: #010d1e;
+  background-color: red;
   color: #cacaca;
   height: var(--note-height);
   margin-bottom: 8px;
