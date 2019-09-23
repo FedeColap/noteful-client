@@ -19,7 +19,7 @@ class App extends Component {
         // fake date loading from API call
         setTimeout(() => this.setState(dummyStore), 600);
     }
-
+    //questo renders tutti i navBars, in caso di Main (=NoteListNav), in caso di selected a note (=NotePageNav), ed infine in caso di Add a page and add a Note
     renderNavRoutes() {
         const {notes, folders} = this.state;
         return (
@@ -29,10 +29,14 @@ class App extends Component {
                         exact
                         key={path}
                         path={path}
+                        //https://tylermcginnis.com/react-router-pass-props-to-components/#targetText=React%20Router%20uses%20a%20declarative,app's%20location%20matches%20that%20path%20.
                         render={routeProps => (
                             <NoteListNav
                                 folders={folders}
                                 notes={notes}
+                                //https://medium.com/alturasoluciones/how-to-pass-props-to-routes-components-29f5443eee94
+                                //routeProps serve a passare al component <NoteListNav/> i props che appartengono al <Route/> component (in questo caso, 
+                                //linee 29-32). Cosi', <NoteListNav/> avra' i componenti che noi gli vogliamo passare, piu' quelli propri di Route
                                 {...routeProps}
                             />
                         )}
@@ -52,7 +56,7 @@ class App extends Component {
             </>
         );
     }
-
+    // questo renders la sezione main, sia in posizione di base (=NoteListMain) che quando scegli una nota (=NotePageMain)
     renderMainRoutes() {
         const {notes, folders} = this.state;
         return (
