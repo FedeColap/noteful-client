@@ -5,8 +5,8 @@ import NoteListNav from '../NoteListNav/NoteListNav';
 import NotePageNav from '../NotePageNav/NotePageNav';
 import NoteListMain from '../NoteListMain/NoteListMain';
 import NotePageMain from '../NotePageMain/NotePageMain';
-import dummyStore from '../dummy-store';
-import {getNotesForFolder, findNote, findFolder} from '../notes-helpers';
+import ApiContext from '../ApiContext';
+import config from '../config';
 import './App.css';
 
 class App extends Component {
@@ -16,12 +16,33 @@ class App extends Component {
     };
 
     componentDidMount() {
-        // fake date loading from API call
-        setTimeout(() => this.setState(dummyStore), 600);
+        Promise.all([
+            fetch(`${config.API_ENDPOINT}/notes`),
+            fetch(`${config.API_ENDPOINT}/folders`)
+        ])
+            .then(([notesRes, foldersRes]) => {
+                if (!notesRes.ok)
+                    return notesRes.json().then(e => Promise.reject(e));
+                if (!foldersRes.ok)
+                    return foldersRes.json().then(e => Promise.reject(e));
+
+                return Promise.all([notesRes.json(), foldersRes.json()]);
+            })
+            .then(([notes, folders]) => {
+                this.setState({notes, folders});
+            })
+            .catch(error => {
+                console.error({error});
+            });
     }
-    //questo renders tutti i navBars, in caso di Main (=NoteListNav), in caso di selected a note (=NotePageNav), ed infine in caso di Add a page and add a Note
+
+    handleDeleteNote = noteId => {
+        this.setState({
+            notes: this.state.notes.filter(note => note.id !== noteId)
+        });
+    };
+
     renderNavRoutes() {
-        const {notes, folders} = this.state;
         return (
             <>
                 {['/', '/folder/:folderId'].map(path => (
@@ -29,36 +50,17 @@ class App extends Component {
                         exact
                         key={path}
                         path={path}
-                        //https://tylermcginnis.com/react-router-pass-props-to-components/#targetText=React%20Router%20uses%20a%20declarative,app's%20location%20matches%20that%20path%20.
-                        render={routeProps => (
-                            <NoteListNav
-                                folders={folders}
-                                notes={notes}
-                                //https://medium.com/alturasoluciones/how-to-pass-props-to-routes-components-29f5443eee94
-                                //routeProps serve a passare al component <NoteListNav/> i props che appartengono al <Route/> component (in questo caso, 
-                                //linee 29-32). Cosi', <NoteListNav/> avra' i componenti che noi gli vogliamo passare, piu' quelli propri di Route
-                                {...routeProps}
-                            />
-                        )}
+                        component={NoteListNav}
                     />
                 ))}
-                <Route
-                    path="/note/:noteId"
-                    render={routeProps => {
-                        const {noteId} = routeProps.match.params;
-                        const note = findNote(notes, noteId) || {};
-                        const folder = findFolder(folders, note.folderId);
-                        return <NotePageNav {...routeProps} folder={folder} />;
-                    }}
-                />
+                <Route path="/note/:noteId" component={NotePageNav} />
                 <Route path="/add-folder" component={NotePageNav} />
                 <Route path="/add-note" component={NotePageNav} />
             </>
         );
     }
-    // questo renders la sezione main, sia in posizione di base (=NoteListMain) che quando scegli una nota (=NotePageMain)
+
     renderMainRoutes() {
-        const {notes, folders} = this.state;
         return (
             <>
                 {['/', '/folder/:folderId'].map(path => (
@@ -66,45 +68,33 @@ class App extends Component {
                         exact
                         key={path}
                         path={path}
-                        render={routeProps => {
-                            const {folderId} = routeProps.match.params;
-                            const notesForFolder = getNotesForFolder(
-                                notes,
-                                folderId
-                            );
-                            return (
-                                <NoteListMain
-                                    {...routeProps}
-                                    notes={notesForFolder}
-                                />
-                            );
-                        }}
+                        component={NoteListMain}
                     />
                 ))}
-                <Route
-                    path="/note/:noteId"
-                    render={routeProps => {
-                        const {noteId} = routeProps.match.params;
-                        const note = findNote(notes, noteId);
-                        return <NotePageMain {...routeProps} note={note} />;
-                    }}
-                />
+                <Route path="/note/:noteId" component={NotePageMain} />
             </>
         );
     }
 
     render() {
+        const value = {
+            notes: this.state.notes,
+            folders: this.state.folders,
+            deleteNote: this.handleDeleteNote
+        };
         return (
-            <div className="App">
-                <nav className="App__nav">{this.renderNavRoutes()}</nav>
-                <header className="App__header">
-                    <h1>
-                        <Link to="/">Noteful</Link>{' '}
-                        <FontAwesomeIcon icon="check-double" />
-                    </h1>
-                </header>
-                <main className="App__main">{this.renderMainRoutes()}</main>
-            </div>
+            <ApiContext.Provider value={value}>
+                <div className="App">
+                    <nav className="App__nav">{this.renderNavRoutes()}</nav>
+                    <header className="App__header">
+                        <h1>
+                            <Link to="/">Noteful</Link>{' '}
+                            <FontAwesomeIcon icon="check-double" />
+                        </h1>
+                    </header>
+                    <main className="App__main">{this.renderMainRoutes()}</main>
+                </div>
+            </ApiContext.Provider>
         );
     }
 }
