@@ -35,9 +35,9 @@ class AddNote extends Component {
     render() { 
         const { className, ...otherProps } = this.props
         console.log(this.context.folders)
-        const foldersNames = this.context.folders.map(folder => {
+        const foldersNames = this.context.folders.map(folder => 
         <option key={folder.id} value={folder.name}>{folder.name}</option>
-        })
+        )
         console.log(foldersNames)
         return (
             <div>

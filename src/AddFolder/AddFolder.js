@@ -7,8 +7,7 @@ class AddFolder extends Component {
     
 
     state= {
-        name: '',
-        error: null   
+        name: '' 
     }
     handleChange = (e) => {
         this.setState({
@@ -18,7 +17,8 @@ class AddFolder extends Component {
     handleSubmit = (e) => {
         e.preventDefault();
         console.log(this.state)
-        const {name} = this.state.name
+        const name = this.state
+        console.log(e)
         
         fetch(`${config.API_ENDPOINT}/folders`,{
             method: 'POST',
@@ -37,7 +37,7 @@ class AddFolder extends Component {
                     })
                 } return res.json()
             })
-
+            
             .then(this.props.history.push('/'))
             .catch(error => {
                 console.error({error});
