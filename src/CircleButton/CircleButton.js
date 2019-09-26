@@ -3,7 +3,7 @@ import './CircleButton.css'
 
 export default function NavCircleButton(props) {
   const { tag, className, childrenm, ...otherProps } = props
-  console.log(props.tag)
+  
 
   return React.createElement(
     props.tag,
