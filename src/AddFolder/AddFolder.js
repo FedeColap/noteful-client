@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import ApiContext from '../ApiContext'
 import config from '../config';
+import PropTypes from 'prop-types';
 
 class AddFolder extends Component {
     static contextType = ApiContext;
@@ -9,7 +10,7 @@ class AddFolder extends Component {
     
 
     state= {
-        name: '' 
+        name: ""
     }
     handleChange = (e) => {
         this.setState({
@@ -70,6 +71,10 @@ class AddFolder extends Component {
  
 export default AddFolder;
 
-// AddFolder.defaultProps = {
-//     handleNewInsertion : {handleNewInsertion}   
-// }
+AddFolder.defaultProps = {
+    name: "New Folder"
+  };
+
+AddFolder.propTypes = {
+  name: PropTypes.string.isRequired
+};
