@@ -38,8 +38,42 @@ class AddNote extends Component {
             folderId: found.id
         })
     }
+    validateName = (e) => {
+        console.log(this.state.name)
+        const name = this.state.name.trim();
+        if (name.length === 0) {
+          window.alert ('Please name the note')
+        } else if (name.length < 3) {
+            window.alert ('Name must be at least 3 characters long')
+        } else {this.validateContent(e)}
+    }
+
+    validateContent = (e) => {
+        console.log(this.state.content)
+        const content = this.state.content.trim();
+        if (content.length === 0) {
+            window.alert ('Please provide a description')
+        } else if (content.length < 9) {
+            window.alert ('Also the content must be at least 9 characters long')
+        } else {this.handleSubmit(e)}
+    }
+
+
+    validateInputs = (e) => {
+        this.validateName(e);
+       
+    }
+
     handleSubmit = (e) => {
         e.preventDefault();
+        
+
+        // const d = new Date();
+        // this.setState({
+        //     modified : {d}  // THIS HAS TO BE REVIEWED <--------------------
+        // })
+        // console.log(typeof(d))
+
         console.log(this.state)
        
         let data = this.state
@@ -80,7 +114,7 @@ class AddNote extends Component {
                     className={['Noteful-form', className].join(' ')}
                     action='#'
                     {...otherProps}
-                    onSubmit={this.handleSubmit}
+                    onSubmit={this.validateInputs}
                 >
                     <h4>Create a Note</h4>
                     <label htmlFor='nameN'>Name</label>
