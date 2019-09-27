@@ -4,6 +4,8 @@ import config from '../config';
 
 class AddFolder extends Component {
     static contextType = ApiContext;
+
+    
     
 
     state= {
@@ -37,8 +39,9 @@ class AddFolder extends Component {
                     })
                 } return res.json()
             })
-            
+            // .then(this.props.handleNewInsertion(e))
             .then(this.props.history.push('/'))
+            
             .catch(error => {
                 console.error({error});
             });
@@ -66,3 +69,7 @@ class AddFolder extends Component {
 }
  
 export default AddFolder;
+
+// AddFolder.defaultProps = {
+//     handleNewInsertion : {handleNewInsertion}   
+// }

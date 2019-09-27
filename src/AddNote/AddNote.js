@@ -23,22 +23,57 @@ class AddNote extends Component {
         })
     }
     handleFolderName = (e) => {
+
+       console.log(this.context.folders)
+       
+        const folderDeCui = e.target.value
+        // console.log(folders.folders)
+        const found = this.context.folders.find((element) => {
+            return element.name === folderDeCui
+        })
+        console.log(found.id)
+
         this.setState({
-            folder : e.target.value
+            folder : e.target.value,
+            folderId: found.id
         })
     }
     handleSubmit = (e) => {
         e.preventDefault();
         console.log(this.state)
+       
+        let data = this.state
+       
+        fetch(`${config.API_ENDPOINT}/notes`, {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: {
+            'content-type': 'application/json',
+            }
+        })
+            
+            .then((res) => {
+                if (!res.ok) {
+                    return res.json().then(error => {
+                        // then throw it
+                        throw error
+                    });
+                } return res.json()
+            })
+
+            .then(this.props.history.push('/'))
+            .catch(error => {
+                console.error({error});
+            });
     }
     
     render() { 
         const { className, ...otherProps } = this.props
-        console.log(this.context.folders)
+        // console.log(this.context.folders)
         const foldersNames = this.context.folders.map(folder => 
         <option key={folder.id} value={folder.name}>{folder.name}</option>
         )
-        console.log(foldersNames)
+        // console.log(foldersNames)
         return (
             <div>
                 <form 
