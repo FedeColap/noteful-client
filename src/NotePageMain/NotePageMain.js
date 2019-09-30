@@ -3,13 +3,15 @@ import Note from '../Note/Note'
 import ApiContext from '../ApiContext'
 import { findNote } from '../notes-helpers'
 import './NotePageMain.css'
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary'
+import PropTypes from 'prop-types';
 
 export default class NotePageMain extends React.Component {
-  static defaultProps = {
-    match: {
-      params: {}
-    }
-  }
+  // static defaultProps = {
+  //   match: {
+  //     params: {}
+  //   }
+  // }
   static contextType = ApiContext
 
   handleDeleteNote = noteId => {
@@ -21,6 +23,7 @@ export default class NotePageMain extends React.Component {
     const { noteId } = this.props.match.params
     const note = findNote(notes, noteId) || { content: '' }
     return (
+      <ErrorBoundary>
       <section className='NotePageMain'>
         <Note
           id={note.id}
@@ -34,6 +37,11 @@ export default class NotePageMain extends React.Component {
           )}
         </div>
       </section>
+      </ErrorBoundary>
     )
   }
+}
+
+NotePageMain.propTypes = {
+  match: PropTypes.object
 }

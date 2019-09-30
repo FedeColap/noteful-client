@@ -4,15 +4,16 @@ import CircleButton from '../CircleButton/CircleButton'
 import ApiContext from '../ApiContext'
 import { findNote, findFolder } from '../notes-helpers'
 import './NotePageNav.css'
+import PropTypes from 'prop-types';
 
 export default class NotePageNav extends React.Component {
   static defaultProps = {
     history: {
       goBack: () => { }
     },
-    match: {
-      params: {}
-    }
+    // match: {
+    //   params: {}
+    // }
   }
   static contextType = ApiContext;
 
@@ -41,4 +42,8 @@ export default class NotePageNav extends React.Component {
       </div>
     )
   }
+}
+
+NotePageNav.propTypes = {
+  match: PropTypes.object
 }

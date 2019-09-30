@@ -38,9 +38,10 @@ class AddFolder extends Component {
                       // then throw it
                       throw error
                     })
+                    
                 } return res.json()
             })
-            // .then(this.props.handleNewInsertion(e))
+            // .then(this.props.retrieveAdjFolders())
             .then(this.props.history.push('/'))
             
             .catch(error => {

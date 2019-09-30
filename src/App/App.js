@@ -19,7 +19,7 @@ class App extends Component {
         folders: []
     };
 
-    componentDidMount() {
+    retrieveAdjFolders() {
         Promise.all([
             fetch(`${config.API_ENDPOINT}/notes`),
             fetch(`${config.API_ENDPOINT}/folders`)
@@ -37,7 +37,11 @@ class App extends Component {
             })
             .catch(error => {
                 console.error({error});
-            });
+        });
+    }
+
+    componentDidMount() {
+        this.retrieveAdjFolders()
     }
 
     handleDeleteNote = noteId => {
