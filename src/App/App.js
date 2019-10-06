@@ -19,7 +19,18 @@ class App extends Component {
         folders: []
     };
 
-    retrieveAdjFolders() {
+    addFolder = folder => {
+        this.setState({
+            folders: [...this.state.folders, folder],
+        })
+    }
+    addNote = note => {
+        this.setState({
+            notes: [...this.state.notes, note],
+        })
+    }
+
+    retrieveAdjFolders = () => {
         Promise.all([
             fetch(`${config.API_ENDPOINT}/notes`),
             fetch(`${config.API_ENDPOINT}/folders`)
@@ -91,7 +102,9 @@ class App extends Component {
         const value = {
             notes: this.state.notes,
             folders: this.state.folders,
-            deleteNote: this.handleDeleteNote
+            deleteNote: this.handleDeleteNote,
+            addFolder: this.addFolder,
+            addNote: this.addNote
         };
         return (
             <ApiContext.Provider value={value}>
@@ -105,7 +118,7 @@ class App extends Component {
                             <FontAwesomeIcon icon="check-double" />
                         </h1>
                     </header>
-                <ErrorBoundary>
+                <ErrorBoundary retrieveAdjFolders= {this.retrieveAdjFolders}>
                     <main className="App__main">{this.renderMainRoutes()}</main>
                 </ErrorBoundary>
                 </div>

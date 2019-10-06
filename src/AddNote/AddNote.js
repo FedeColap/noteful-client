@@ -10,11 +10,16 @@ class AddNote extends Component {
         name: '',
         content: '',
         folder: '',
-        error: null,
+        modified: null
     }
     handleName = (e) => {
+        const d = new Date();
+        console.log(d);
+        const date = d.toISOString();
+        console.log(date);
         this.setState({
-            name : e.target.value
+            name : e.target.value,
+            modified : date
         })
     }
     handleContent = (e) => {
@@ -65,12 +70,20 @@ class AddNote extends Component {
     }
 
     handleSubmit = (e) => {
+        // const d = new Date();
+        // console.log(d);
+        // const date = d.toISOString();
+        // console.log(date);
+        // this.setState({
+        //     modified : date // THIS HAS TO BE REVIEWED <--------------------
+        // })
         e.preventDefault();
         
 
         // const d = new Date();
+        // const date = d.toISOString();
         // this.setState({
-        //     modified : {d}  // THIS HAS TO BE REVIEWED <--------------------
+        //     modified : date // THIS HAS TO BE REVIEWED <--------------------
         // })
         // console.log(typeof(d))
 
@@ -95,7 +108,10 @@ class AddNote extends Component {
                 } return res.json()
             })
 
-            .then(this.props.history.push('/'))
+            .then(data => {
+                this.props.history.push('/')
+                this.context.addNote(data)
+            })
             .catch(error => {
                 console.error({error});
             });
