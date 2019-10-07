@@ -17,7 +17,7 @@ class ErrorBoundary extends Component {
     }
     
     render () {
-        if (this.state.redirect) {      
+        if (this.state.hasError) {      
             return (
                 <div>
                     <h2>Could not display this element </h2>

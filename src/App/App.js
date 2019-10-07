@@ -118,7 +118,7 @@ class App extends Component {
                             <FontAwesomeIcon icon="check-double" />
                         </h1>
                     </header>
-                <ErrorBoundary retrieveAdjFolders= {this.retrieveAdjFolders}>
+                <ErrorBoundary>
                     <main className="App__main">{this.renderMainRoutes()}</main>
                 </ErrorBoundary>
                 </div>
