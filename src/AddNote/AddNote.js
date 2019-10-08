@@ -60,6 +60,13 @@ class AddNote extends Component {
             window.alert ('Please provide a description')
         } else if (content.length < 9) {
             window.alert ('Also the content must be at least 9 characters long')
+        } else {this.validateFolder(e)}
+    }
+
+    validateFolder = (e) => {
+        console.log(this.state.folder)
+        if (this.state.folder === "") {
+            window.alert ('Please choose an existing folder')
         } else {this.handleSubmit(e)}
     }
 

@@ -6,9 +6,6 @@ import PropTypes from 'prop-types';
 class AddFolder extends Component {
     static contextType = ApiContext;
 
-    
-    
-
     state= {
         name: ""
     }
@@ -17,6 +14,20 @@ class AddFolder extends Component {
             name : e.target.value
         })
     }
+    validateName = (e) => {
+        console.log(this.state.name)
+        const name = this.state.name.trim();
+        if (name.length === 0) {
+            window.alert ('Please name the folder')
+        } else if (name.length < 3) {
+            window.alert ('The name of the folder must be at least 3 characters long')
+        } else {this.handleSubmit(e)}
+    }
+
+    validateInputs = (e) => {
+        this.validateName(e);  
+    }
+
     handleSubmit = (e) => {
         e.preventDefault();
         console.log(this.state)
@@ -60,7 +71,7 @@ class AddFolder extends Component {
                     className={['Noteful-form', className].join(' ')}
                     action='#'
                     {...otherProps}
-                    onSubmit={this.handleSubmit}
+                    onSubmit={this.validateInputs}
                 >
                     <h4>Create a folder</h4>
                     <label htmlFor='nameF'>Name</label>
